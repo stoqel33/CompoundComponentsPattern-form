@@ -1,0 +1,11 @@
+.wrapper {
+  width: 60%;
+  margin: 0 auto;
+}
+.innerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.5rem 0;
+  text-align: center;
+}
