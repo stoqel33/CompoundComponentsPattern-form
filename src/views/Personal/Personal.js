@@ -21,20 +21,22 @@ const Personal = () => {
     <div className={styled.wrapper}>
       <MultiStep.Wizard>
         <MultiStep.Page pageIndex={0}>
-          <div class={styled.innerWrapper}>
-            <p class="subtitle is-3">You will see some personal questions</p>
-            <p class="subtitle is-5">Let's get started!</p>
+          <div className={styled.innerWrapper}>
+            <p className="subtitle is-3">
+              You will see some personal questions
+            </p>
+            <p className="subtitle is-5">Let's get started!</p>
           </div>
         </MultiStep.Page>
         <MultiStep.Page pageIndex={1}>
           <div className="box">
-            <p class="subtitle is-3">What is your name?</p>
-            <div class="control">
+            <p className="subtitle is-3">What is your name?</p>
+            <div className="control">
               <input
                 name="name"
                 value={inputData.name}
                 onChange={setAnswer}
-                class="input is-rounded"
+                className="input is-rounded"
                 type="text"
                 placeholder="Your name..."
               ></input>
@@ -43,13 +45,14 @@ const Personal = () => {
         </MultiStep.Page>
         <MultiStep.Page pageIndex={2}>
           <div className="box">
-            <p class="subtitle is-3">What is your phone number?</p>
-            <div class="control">
+            <p className="subtitle is-3">What is your phone number? </p>
+            <p className="subtitle is-5">( 9 number characters )</p>
+            <div className="control">
               <input
                 name="phoneNumber"
                 value={inputData.phoneNumber}
                 onChange={setAnswer}
-                class="input is-rounded"
+                className="input is-rounded"
                 type="tel"
                 placeholder="Your phone number..."
               ></input>
@@ -58,13 +61,13 @@ const Personal = () => {
         </MultiStep.Page>
         <MultiStep.Page pageIndex={3}>
           <div className="box">
-            <p class="subtitle is-3">What is your date of birth?</p>
-            <div class="control">
+            <p className="subtitle is-3">What is your date of birth?</p>
+            <div className="control">
               <input
                 name="dateOfBirth"
                 value={inputData.dateOfBirth}
                 onChange={setAnswer}
-                class="input is-rounded"
+                className="input is-rounded"
                 type="date"
               ></input>
             </div>
