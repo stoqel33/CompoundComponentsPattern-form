@@ -1,25 +1,33 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const WizardContext = React.createContext({
   currentPage: 1,
   changePage: () => {},
   pages: [],
   updatePages: () => {},
+  category: "",
+  updateCategory: () => {},
 });
 
 const Page = ({ children, pageIndex }) => {
-  const { currentPage, updatePages } = useContext(WizardContext);
+  const { currentPage, updatePages, updateCategory } = useContext(
+    WizardContext
+  );
 
   useEffect(() => {
     updatePages(pageIndex);
+    updateCategory();
   });
 
   return currentPage === pageIndex ? children : null;
 };
 
 const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
-  const { currentPage, changePage, pages } = useContext(WizardContext);
-  const validationSubmit =
+  const { category, currentPage, changePage, pages } = useContext(
+    WizardContext
+  );
+  const validationPersonalSubmit =
     name.length > 1 && phoneNumber.length > 8 && dateOfBirth.length > 8;
 
   return (
@@ -38,11 +46,19 @@ const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
       >
         Next
       </button>
-      {currentPage === pages.length - 1 ? (
-        <button disabled={!validationSubmit} className="button is-success">
-          Submit
-        </button>
-      ) : null}
+      {currentPage === pages.length - 1 &&
+        (category === "personal" ? (
+          <button
+            disabled={!validationPersonalSubmit}
+            className="button is-success"
+          >
+            Submit
+          </button>
+        ) : (
+          <button disabled={true} className="button is-success">
+            Submit
+          </button>
+        ))}
     </div>
   );
 };
@@ -50,9 +66,14 @@ const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
 const Wizard = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([]);
+  const [category, setCategory] = useState("");
   const changePage = (newPage) => setCurrentPage(newPage);
   const updatePages = (page) => {
     if (!pages.includes(page)) setPages([...pages, page]);
+  };
+  const { pathname } = useLocation();
+  const updateCategory = () => {
+    setCategory(pathname.slice(1));
   };
 
   return (
@@ -62,6 +83,8 @@ const Wizard = ({ children }) => {
         changePage,
         pages,
         updatePages,
+        category,
+        updateCategory,
       }}
     >
       {children}
