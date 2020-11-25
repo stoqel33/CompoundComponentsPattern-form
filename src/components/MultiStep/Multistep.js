@@ -13,11 +13,15 @@ const Page = ({ children, pageIndex }) => {
   useEffect(() => {
     updatePages(pageIndex);
   });
+
   return currentPage === pageIndex ? children : null;
 };
 
-const Controls = () => {
+const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
   const { currentPage, changePage, pages } = useContext(WizardContext);
+  const validationSubmit =
+    name.length > 1 && phoneNumber.length > 8 && dateOfBirth.length > 8;
+
   return (
     <div>
       <button
@@ -35,7 +39,9 @@ const Controls = () => {
         Next
       </button>
       {currentPage === pages.length - 1 ? (
-        <button className="button is-success">Submit</button>
+        <button disabled={!validationSubmit} className="button is-success">
+          Submit
+        </button>
       ) : null}
     </div>
   );
