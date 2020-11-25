@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useReducer } from "react";
 import styled from "./Personal.module.scss";
 import * as MultiStep from "../../components/MultiStep/Multistep";
 
 const Personal = () => {
+  const [inputData, setInputData] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      name: "",
+      phoneNumber: "",
+      dateOfBirth: "",
+    }
+  );
+  const setAnswer = (e) => {
+    setInputData({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div className={styled.wrapper}>
       <MultiStep.Wizard>
@@ -17,6 +31,9 @@ const Personal = () => {
             <p class="subtitle is-3">What is your name?</p>
             <div class="control">
               <input
+                name="name"
+                value={inputData.name}
+                onChange={setAnswer}
                 class="input is-rounded"
                 type="text"
                 placeholder="Your name..."
@@ -29,6 +46,9 @@ const Personal = () => {
             <p class="subtitle is-3">What is your phone number?</p>
             <div class="control">
               <input
+                name="phoneNumber"
+                value={inputData.phoneNumber}
+                onChange={setAnswer}
                 class="input is-rounded"
                 type="tel"
                 placeholder="Your phone number..."
@@ -40,12 +60,18 @@ const Personal = () => {
           <div className="box">
             <p class="subtitle is-3">What is your date of birth?</p>
             <div class="control">
-              <input class="input is-rounded" type="date"></input>
+              <input
+                name="dateOfBirth"
+                value={inputData.dateOfBirth}
+                onChange={setAnswer}
+                class="input is-rounded"
+                type="date"
+              ></input>
             </div>
           </div>
         </MultiStep.Page>
         <div className={styled.innerWrapper}>
-          <MultiStep.Controls />
+          <MultiStep.Controls data={inputData} />
         </div>
       </MultiStep.Wizard>
     </div>
