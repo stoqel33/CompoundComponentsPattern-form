@@ -23,12 +23,30 @@ const Page = ({ children, pageIndex }) => {
   return currentPage === pageIndex ? children : null;
 };
 
-const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
+const Controls = ({ data }) => {
   const { category, currentPage, changePage, pages } = useContext(
     WizardContext
   );
-  const validationPersonalSubmit =
-    name.length > 1 && phoneNumber.length > 8 && dateOfBirth.length > 8;
+
+  let validationSubmit;
+
+  if (category === "personal") {
+    validatePersonal();
+  } else if (category === "hobbies") {
+    validateHobbies();
+  }
+
+  function validatePersonal() {
+    const { name, phoneNumber, dateOfBirth } = data;
+    validationSubmit =
+      name.length > 1 && phoneNumber.length > 8 && dateOfBirth.length > 8;
+  }
+
+  function validateHobbies() {
+    const { favPet, musicBand, sport } = data;
+    validationSubmit =
+      favPet.length > 1 && musicBand.length > 1 && sport.length > 1;
+  }
 
   return (
     <div>
@@ -46,19 +64,11 @@ const Controls = ({ data: { name, phoneNumber, dateOfBirth } }) => {
       >
         Next
       </button>
-      {currentPage === pages.length - 1 &&
-        (category === "personal" ? (
-          <button
-            disabled={!validationPersonalSubmit}
-            className="button is-success"
-          >
-            Submit
-          </button>
-        ) : (
-          <button disabled={true} className="button is-success">
-            Submit
-          </button>
-        ))}
+      {currentPage === pages.length - 1 && (
+        <button disabled={!validationSubmit} className="button is-success">
+          Submit
+        </button>
+      )}
     </div>
   );
 };
