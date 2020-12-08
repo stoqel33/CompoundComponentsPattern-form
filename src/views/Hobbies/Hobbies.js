@@ -88,6 +88,7 @@ const Hobbies = () => {
         <div className={styled.innerWrapper}>
           <MultiStep.Controls data={inputData} />
         </div>
+        <MultiStep.Result />
       </MultiStep.Wizard>
     </div>
   );
