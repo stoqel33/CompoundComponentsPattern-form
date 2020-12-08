@@ -113,6 +113,19 @@ const Result = () => {
   );
 };
 
+const ProgessBar = () => {
+  const { currentPage, pages } = useContext(WizardContext);
+  console.log(currentPage, pages);
+
+  return (
+    <progress
+      className="progress is-warning"
+      value={currentPage}
+      max={pages.length - 1}
+    ></progress>
+  );
+};
+
 const Wizard = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([]);
@@ -148,4 +161,4 @@ const Wizard = ({ children }) => {
   );
 };
 
-export { Page, Controls, Result, Wizard };
+export { Page, Controls, Result, ProgessBar, Wizard };
