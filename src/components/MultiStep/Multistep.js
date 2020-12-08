@@ -8,6 +8,8 @@ const WizardContext = React.createContext({
   updatePages: () => {},
   category: "",
   updateCategory: () => {},
+  questions: [],
+  updateQuestions: () => {},
 });
 
 const Page = ({ children, pageIndex }) => {
@@ -24,9 +26,13 @@ const Page = ({ children, pageIndex }) => {
 };
 
 const Controls = ({ data }) => {
-  const { category, currentPage, changePage, pages } = useContext(
-    WizardContext
-  );
+  const {
+    category,
+    currentPage,
+    changePage,
+    pages,
+    updateQuestions,
+  } = useContext(WizardContext);
 
   let validationSubmit;
 
@@ -48,6 +54,16 @@ const Controls = ({ data }) => {
       favPet.length > 1 && musicBand.length > 1 && sport.length > 1;
   }
 
+  const handleSubmit = () => {
+    if (category === "personal") {
+      const { name, phoneNumber, dateOfBirth } = data;
+      updateQuestions([name, phoneNumber, dateOfBirth]);
+    } else if (category === "hobbies") {
+      const { favPet, musicBand, sport } = data;
+      updateQuestions([favPet, musicBand, sport]);
+    }
+  };
+
   return (
     <div>
       <button
@@ -65,7 +81,11 @@ const Controls = ({ data }) => {
         Next
       </button>
       {currentPage === pages.length - 1 && (
-        <button disabled={!validationSubmit} className="button is-success">
+        <button
+          disabled={!validationSubmit}
+          className="button is-success"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       )}
@@ -73,10 +93,31 @@ const Controls = ({ data }) => {
   );
 };
 
+const Result = () => {
+  const { questions } = useContext(WizardContext);
+  return (
+    <article className="message is-success">
+      {questions.length > 0 && (
+        <>
+          <div className="message-header">
+            <p>Your Answers</p>
+          </div>
+          <div className="message-body">
+            {questions.map((item) => (
+              <div>{item}</div>
+            ))}
+          </div>
+        </>
+      )}
+    </article>
+  );
+};
+
 const Wizard = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [category, setCategory] = useState("");
+  const [questions, setQuestions] = useState([]);
   const changePage = (newPage) => setCurrentPage(newPage);
   const updatePages = (page) => {
     if (!pages.includes(page)) setPages([...pages, page]);
@@ -84,6 +125,9 @@ const Wizard = ({ children }) => {
   const { pathname } = useLocation();
   const updateCategory = () => {
     setCategory(pathname.slice(1));
+  };
+  const updateQuestions = (data) => {
+    setQuestions(data);
   };
 
   return (
@@ -95,6 +139,8 @@ const Wizard = ({ children }) => {
         updatePages,
         category,
         updateCategory,
+        questions,
+        updateQuestions,
       }}
     >
       {children}
@@ -102,4 +148,4 @@ const Wizard = ({ children }) => {
   );
 };
 
-export { Page, Controls, Wizard };
+export { Page, Controls, Result, Wizard };
